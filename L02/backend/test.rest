@@ -1,26 +1,40 @@
-### Health check
-GET http://localhost:8080/health
-
-### Professional endpoint (should return [] initially)
-GET http://localhost:8080/professional
-
-### Create a professional (seed)
-POST http://localhost:8080/professional
+### Create contact 1
+POST http://localhost:8080/contacts
 Content-Type: application/json
 
 {
-  "name": "Kelsie Garcia",
-  "role": "Software Developer"
+  "firstName": "Kelsie",
+  "lastName": "Garcia",
+  "email": "kelsie@example.com",
+  "favoriteColor": "Green",
+  "birthday": "1996-04-15"
 }
 
-### Create another professional
-POST http://localhost:8080/professional
+### Create contact 2
+POST http://localhost:8080/contacts
 Content-Type: application/json
 
 {
-  "name": "Jacob Smith",
-  "role": "Project Manager"
+  "firstName": "Avery",
+  "lastName": "Kim",
+  "email": "avery@example.com",
+  "favoriteColor": "Blue",
+  "birthday": "1995-10-03"
 }
 
-### Get all again (should show 2 docs now)
-GET http://localhost:8080/professional
+### Create contact 3
+POST http://localhost:8080/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Noah",
+  "lastName": "Lee",
+  "email": "noah@example.com",
+  "favoriteColor": "Purple",
+  "birthday": "1997-02-20"
+}
+
+### Get all contacts
+GET http://localhost:8080/contacts
+
+

@@ -1,11 +1,11 @@
 const mongodb = require('../db/link');
 
-// GET /professional  -> returns all docs from 'user'
+// GET /contact - returns all docs from 'user'
 const getData = async (req, res) => {
   try {
     const docs = await mongodb
       .getDb()                      // returns Db object
-      .collection('user')
+      .collection('contacts')
       .find({})
       .toArray();
 
@@ -16,18 +16,18 @@ const getData = async (req, res) => {
   }
 };
 
-// POST /professional -> inserts one doc into 'user'
+// POST /contact - inserts one doc into 'user'
 const createData = async (req, res) => {
   try {
     const result = await mongodb
       .getDb()                      // returns Db object
-      .collection('user')
+      .collection('contacts')
       .insertOne(req.body);
 
     if (!result.acknowledged) {
       return res.status(500).json({ error: 'insert_failed' });
     }
-    res.status(201).json({ message: 'User created', id: result.insertedId });
+    res.status(201).json({ message: 'contact created', id: result.insertedId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'server_error' });
