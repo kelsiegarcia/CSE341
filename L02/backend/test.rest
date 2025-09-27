@@ -1,0 +1,26 @@
+### Health check
+GET http://localhost:8080/health
+
+### Professional endpoint (should return [] initially)
+GET http://localhost:8080/professional
+
+### Create a professional (seed)
+POST http://localhost:8080/professional
+Content-Type: application/json
+
+{
+  "name": "Kelsie Garcia",
+  "role": "Software Developer"
+}
+
+### Create another professional
+POST http://localhost:8080/professional
+Content-Type: application/json
+
+{
+  "name": "Jacob Smith",
+  "role": "Project Manager"
+}
+
+### Get all again (should show 2 docs now)
+GET http://localhost:8080/professional
