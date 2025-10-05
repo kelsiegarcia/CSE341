@@ -1,4 +1,4 @@
-require('dotenv').config(); // fine locally; on Render use dashboard env vars
+require('dotenv').config();
 
 const express = require('express');
 const dbLink = require('./backend/db/link');

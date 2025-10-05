@@ -1,5 +1,49 @@
-### Create contact 1
-POST http://localhost:8080/contacts
+# @base = http://localhost:8080
+
+
+# ### Create contact 1 (returns 201)
+# ### @name createContact
+# POST {{base}}/contacts
+# Content-Type: application/json
+
+# {
+#   "firstName": "Kelsie",
+#   "lastName": "Garcia",
+#   "email": "kelsie@example.com",
+#   "favoriteColor": "Green",
+#   "birthday": "1996-04-15"
+# }
+
+# ### capture the new contact's ID from previous response
+# @contactId={{$last.response.body.$._id}}
+
+
+# ### Get all contacts (returns 200)
+# GET {{base}}/contacts
+
+# ### Show last response for debugging
+# GET {{$last.response.body._id}}
+
+# ### update the same contact (returns 200)
+# PUT {{base}}/contacts/{{contactId}}
+# Content-Type: application/json
+
+# {
+#   "firstName": "Kelsie",
+#   "lastName": "Garcia",
+#   "email": "kelsie@example.com",
+#   "favoriteColor": "Yellow",
+#   "birthday": "1996-04-15"
+# }
+
+# ### Delete that contact
+# DELETE {{base}}/contacts/{{contactId}}
+
+
+@base = http://localhost:8080
+
+### Create a contact (returns 201)
+POST {{base}}/contacts
 Content-Type: application/json
 
 {
@@ -10,31 +54,23 @@ Content-Type: application/json
   "birthday": "1996-04-15"
 }
 
-### Create contact 2
-POST http://localhost:8080/contacts
+### Get all contacts (returns 200)
+GET {{base}}/contacts
+
+### Get a single contact by ID (optional)
+GET {{base}}/contacts/68d7552da84d8f14f7c0ad3d
+
+### Update that contact (returns 204)
+PUT {{base}}/contacts/68d7552da84d8f14f7c0ad3d
 Content-Type: application/json
 
 {
-  "firstName": "Avery",
-  "lastName": "Kim",
-  "email": "avery@example.com",
-  "favoriteColor": "Blue",
-  "birthday": "1995-10-03"
+  "firstName": "David",
+  "lastName": "Garcia",
+  "email": "kelsie@example.com",
+  "favoriteColor": "Yellow",
+  "birthday": "1996-04-15"
 }
 
-### Create contact 3
-POST http://localhost:8080/contacts
-Content-Type: application/json
-
-{
-  "firstName": "Noah",
-  "lastName": "Lee",
-  "email": "noah@example.com",
-  "favoriteColor": "Purple",
-  "birthday": "1997-02-20"
-}
-
-### Get all contacts
-GET http://localhost:8080/contacts
-
-
+### Delete that contact (returns 200)
+DELETE {{base}}/contacts/68d7552da84d8f14f7c0ad3d
