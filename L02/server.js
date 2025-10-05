@@ -17,8 +17,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// Redirect root to /contacts
+app.get('/', (req, res) => res.redirect('/contacts'));
+
 // Routes
 app.use('/contacts', contactRoutes);
+
+// Health check for Render
 app.get('/health', (_req, res) => res.send('ok'));
 
 // Start after DB is ready
