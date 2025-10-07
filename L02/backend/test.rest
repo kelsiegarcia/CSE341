@@ -47,30 +47,30 @@ POST {{base}}/contacts
 Content-Type: application/json
 
 {
-  "firstName": "Kelsie",
-  "lastName": "Garcia",
-  "email": "kelsie@example.com",
-  "favoriteColor": "Green",
-  "birthday": "1996-04-15"
+  "firstName": "Minnie",
+  "lastName": "Mouse",
+  "email": "minnie@mouse.com",
+  "favoriteColor": "Red",
+  "birthday": "1987-3-26"
 }
 
 ### Get all contacts (returns 200)
 GET {{base}}/contacts
 
 ### Get a single contact by ID (optional)
-GET {{base}}/contacts/68d7552da84d8f14f7c0ad3d
+GET {{base}}/contacts/68e1e8372174f6ccee2233d9
 
 ### Update that contact (returns 204)
-PUT {{base}}/contacts/68d7552da84d8f14f7c0ad3d
+PUT {{base}}/contacts/68e1e8372174f6ccee2233d9
 Content-Type: application/json
 
 {
   "firstName": "David",
-  "lastName": "Garcia",
+  "lastName": "Mouse",
   "email": "kelsie@example.com",
   "favoriteColor": "Yellow",
   "birthday": "1996-04-15"
 }
 
 ### Delete that contact (returns 200)
-DELETE {{base}}/contacts/68d7552da84d8f14f7c0ad3d
+DELETE {{base}}/contacts/68e1e8372174f6ccee2233d9

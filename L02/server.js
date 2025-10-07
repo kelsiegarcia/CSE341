@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const dbLink = require('./backend/db/link');
 const contactRoutes = require('./backend/routes/contacts');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./backend/swagger-output.json');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -26,6 +28,9 @@ app.use('/contacts', contactRoutes);
 // Health check for Render
 app.get('/health', (_req, res) => res.send('ok'));
 
+// Swagger documentation route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 // Start after DB is ready
 dbLink.initDb((err) => {
   if (err) {
@@ -37,3 +42,4 @@ dbLink.initDb((err) => {
     console.log(`Connected to DB and listening on ${port}`);
   });
 });
+
