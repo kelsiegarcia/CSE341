@@ -6,8 +6,11 @@ const doc = {
     title: 'Contacts API',
     description: 'A simple Express Contacts API',
   },
-  host: 'localhost:8080',
-  schemes: ['http'],
+  host:
+    process.env.NODE_ENV === 'production'
+      ? 'your-app-name.onrender.com'
+      : 'localhost:8080',
+  schemes: process.env.NODE_ENV === 'production' ? ['https'] : ['http'],
   basePath: '/contacts',
 };
 
