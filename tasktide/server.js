@@ -35,4 +35,3 @@ app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
 
-console.log('Loaded MONGODB_URI:', process.env.MONGODB_URI);
