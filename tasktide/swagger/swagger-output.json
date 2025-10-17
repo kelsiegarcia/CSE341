@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Event Scheduler API",
-    "description": "API for creating and managing community events.",
+    "description": "API for creating and managing events",
     "version": "1.0.0"
   },
   "host": "localhost:8080",
@@ -11,128 +11,158 @@
     "http"
   ],
   "paths": {
-  "/events": {
-    "get": {
-      "summary": "Get all events",
-      "description": "Fetch all events from the database.",
-      "operationId": "getAllEvents",
-      "parameters": [
-        {
-          "in": "query",
-          "name": "limit",
-          "type": "integer",
-          "required": false,
-          "description": "Optional number of results to return."
+    "/": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
         }
-      ],
-      "responses": {
-        "200": { "description": "OK" },
-        "500": { "description": "Internal Server Error" }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "post": {
-      "summary": "Create a new event",
-      "description": "Adds a new event to the database.",
-      "parameters": [
-        {
-          "in": "body",
-          "name": "body",
-          "required": true,
-          "schema": { "$ref": "#/definitions/Event" }
+    "/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
-      ],
-      "responses": {
-        "201": { "description": "Created" },
-        "400": { "description": "Bad Request" }
       }
     }
   },
-  "/events/{id}": {
-    "get": {
-      "summary": "Get an event by ID",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string",
-          "example": "652fe97ac51f5b9a278f003c"
-        }
-      ],
-      "responses": {
-        "200": { "description": "OK" },
-        "404": { "description": "Not Found" }
-      }
-    },
-    "put": {
-      "summary": "Update an event by ID",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "in": "body",
-          "name": "body",
-          "required": true,
-          "schema": { "$ref": "#/definitions/Any" }
-        }
-      ],
-      "responses": {
-        "200": { "description": "Updated" },
-        "400": { "description": "Bad Request" }
-      }
-    },
-    "delete": {
-      "summary": "Delete an event by ID",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "200": { "description": "Deleted" },
-        "404": { "description": "Not Found" }
-      }
-    }
-  }
-},
   "definitions": {
     "Event": {
       "type": "object",
       "properties": {
-        "title": {
+        "type": {
           "type": "string",
-          "example": "Community Beach Cleanup"
+          "example": "object"
         },
-        "description": {
-          "type": "string",
-          "example": "Join us for a Saturday morning cleanup at the park!"
-        },
-        "date": {
-          "type": "string",
-          "example": "2025-11-05T09:00:00Z"
-        },
-        "location": {
-          "type": "string",
-          "example": "Ala Moana Beach Park"
-        },
-        "category": {
-          "type": "string",
-          "example": "Volunteer"
-        },
-        "capacity": {
-          "type": "integer",
-          "example": 50
-        },
-        "organizerId": {
-          "type": "string",
-          "example": "652fe97ac51f5b9a278f003c"
+        "properties": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "Community Beach Cleanup"
+                }
+              }
+            },
+            "description": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "Join us for a Saturday morning to keep the beach clean!"
+                }
+              }
+            },
+            "date": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "2025-11-05T09:00:00Z"
+                }
+              }
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "Ala Moana Beach Park"
+                }
+              }
+            },
+            "category": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "Volunteer"
+                }
+              }
+            },
+            "capacity": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "number"
+                },
+                "example": {
+                  "type": "number",
+                  "example": 50
+                }
+              }
+            },
+            "organizerId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "652fe97ac51f5b9a278f003c"
+                }
+              }
+            }
+          }
         }
       }
     }

@@ -1,14 +1,18 @@
 // swagger
 
 const swaggerAutogen = require('swagger-autogen')();
+const isRender = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
+const host = isRender
+  ? 'tasktide.onrender.com'
+  : 'localhost:8080';
 
 const doc = {
   info: {
     title: 'Event Scheduler API',
-    description: 'API for managing events',
+    description: 'API for creating and managing events',
   },
-  host: 'localhost:8080',
-  schemes: ['http'],
+  host: host,
+  schemes: isRender ? ['https'] :  ['http'],
 
   definitions: {
     Event: {
