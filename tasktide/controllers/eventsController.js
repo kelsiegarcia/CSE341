@@ -2,7 +2,7 @@
 const Event = require('../models/Event');
 
 // Get all events
-exports.getAllEvents = async (req, res) => {
+const getAllEvents = async (req, res) => {
     try {
         const events = await Event.find();
         res.status(200).json(events);
@@ -11,8 +11,21 @@ exports.getAllEvents = async (req, res) => {
     }
 };
 
+// Get event by ID
+const getEventById = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        res.status(200).json(event);
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error });
+    }
+};
+
 // Create a new event
-exports.createEvent = async (req, res) => {
+const createEvent = async (req, res) => {
     try {
         const newEvent = new Event(req.body);
         const savedEvent = await newEvent.save();
@@ -23,7 +36,7 @@ exports.createEvent = async (req, res) => {
 };
 
 // POST /events
-exports.createEventHandler = async (req, res) => {
+const createEventHandler = async (req, res) => {
     try {
         const event = new Event(req.body);
         await event.save();
@@ -33,8 +46,4 @@ exports.createEventHandler = async (req, res) => {
     }
 };
 
-module.exports = {
-    getAllEvents: exports.getAllEvents,
-    createEvent: exports.createEvent,
-    createEventHandler: exports.createEventHandler
-};
+module.exports = { getAllEvents, createEvent, createEventHandler, getEventById };

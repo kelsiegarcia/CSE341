@@ -1,4 +1,4 @@
-require('dotenv').config(); 
+require('dotenv').config({ path: __dirname + '/.env' }); 
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -34,3 +34,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
+
+console.log('Loaded MONGODB_URI:', process.env.MONGODB_URI);
