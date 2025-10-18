@@ -1,0 +1,34 @@
+@base = http://localhost:8080
+
+
+### Get all events
+GET {{base}}/events
+Content-Type: application/json
+
+
+### Get a single event by ID
+# @name getEvent
+# Replace with a valid ID from your database
+GET {{base}}/events/68f2c7426882aeb97fa02a7b
+Content-Type: application/json
+
+
+### Create a new event
+# @name createEvent
+POST {{base}}/events
+Content-Type: application/json
+
+{
+  "title": "Community Cleanup Day",
+  "date": "2025-11-12",
+  "location": "Honolulu Park",
+  "description": "Join us for a morning of community service and fun!"
+}
+
+
+### Capture the created event's ID
+@eventId = {{createEvent.response.body._id}}
+
+### Verify the newly created event
+GET {{base}}/events/{{eventId}}
+Content-Type: application/json

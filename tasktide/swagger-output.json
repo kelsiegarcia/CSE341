@@ -7,27 +7,21 @@
   },
   "host": "localhost:8080",
   "basePath": "/events",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/": {
       "get": {
-        "description": "Get all events",
+        "summary": "Get all events",
+        "description": "Returns a list of all events",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "post": {
-        "description": "Create a new event",
-        "consumes": [
-          "application/json"
-        ],
+        "summary": "Create a new event",
+        "description": "Adds a new event to the database",
+        "consumes": ["application/json"],
         "parameters": [
           {
             "name": "body",
@@ -35,79 +29,97 @@
             "required": true,
             "schema": {
               "type": "object",
-              "required": [
-                "title",
-                "description",
-                "date",
-                "location"
-              ],
+              "required": ["title", "description", "date", "location"],
               "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Community Beach Cleanup"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Join us for a Saturday morning to keep the beach clean!"
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2025-11-05T09:00:00Z"
-                },
-                "location": {
-                  "type": "string",
-                  "example": "Ala Moana Beach Park"
-                },
-                "category": {
-                  "type": "string",
-                  "example": "Volunteer"
-                },
-                "capacity": {
-                  "type": "number",
-                  "example": 50
-                },
-                "organizerId": {
-                  "type": "string",
-                  "example": "652fe97ac51f5b9a278f003c"
-                }
+                "title": { "type": "string", "example": "Community Beach Cleanup" },
+                "description": { "type": "string", "example": "Join us for a Saturday morning to keep the beach clean!" },
+                "date": { "type": "string", "example": "2025-11-05T09:00:00Z" },
+                "location": { "type": "string", "example": "Ala Moana Beach Park" },
+                "category": { "type": "string", "example": "Volunteer" },
+                "capacity": { "type": "number", "example": 50 },
+                "organizerId": { "type": "string", "example": "652fe97ac51f5b9a278f003c" }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
     "/{id}": {
       "get": {
-        "description": "Get an event by ID",
+        "summary": "Get event by ID",
+        "description": "Retrieve a single event using its unique ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "example": "652fe97ac51f5b9a278f003c"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "summary": "Update an event by ID",
+        "description": "Modify an existing event’s details using its ID",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "652fe97ac51f5b9a278f003c"
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string", "example": "Updated Event Title" },
+                "description": { "type": "string", "example": "Updated event details and activities" },
+                "date": { "type": "string", "example": "2025-12-01T10:00:00Z" },
+                "location": { "type": "string", "example": "Waikiki Beach" },
+                "category": { "type": "string", "example": "Community" },
+                "capacity": { "type": "number", "example": 75 }
+              }
+            }
           }
+        ],
+        "responses": {
+          "200": { "description": "Updated Successfully" },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event by ID",
+        "description": "Removes an event from the database",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "652fe97ac51f5b9a278f003c"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted Successfully" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     }

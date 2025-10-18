@@ -3,7 +3,9 @@ const router = express.Router();
 const {
   getAllEvents,
   getEventById,
-  createEvent
+  createEvent,
+  updateEvent,
+  deleteEvent
 } = require('../controllers/eventsController');
 
 /**
@@ -77,5 +79,11 @@ router.get('/:id', getEventById);
 
 // Create a new event
 router.post('/', createEvent);
+
+// PUT
+router.put('/:id', updateEvent);
+// DELETE
+router.delete('/:id', deleteEvent);
+
 
 module.exports = router;
