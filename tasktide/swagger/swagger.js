@@ -1,40 +1,77 @@
-// swagger
-
+// swagger/swagger.js
 const swaggerAutogen = require('swagger-autogen')();
-const isRender = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
-const host = isRender
-  ? 'tasktide.onrender.com'
-  : 'localhost:8080';
 
 const doc = {
+  swagger: '2.0',
   info: {
     title: 'Event Scheduler API',
-    description: 'API for creating and managing events',
+    description: 'A simple Express API for creating and managing events',
+    version: '1.0.0'
   },
-  host: host,
-  schemes: isRender ? ['https'] :  ['http'],
-
-  definitions: {
-    Event: {
-      title: 'Community Beach Cleanup',
-      description: 'Join us for a Saturday morning to keep the beach clean!',
-      date: '2025-11-05T09:00:00Z',
-      location: 'Ala Moana Beach Park',
-      category: 'Volunteer',
-      capacity: 50,
-      organizerId: '652fe97ac51f5b9a278f003c'
+  host: 'localhost:8080',
+  basePath: '/events',
+  schemes: ['http'],
+  paths: {
+    '/': {
+      get: {
+        description: 'Get all events',
+        responses: {
+          200: { description: 'OK' },
+          500: { description: 'Internal Server Error' }
+        }
+      },
+      post: {
+        description: 'Create a new event',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'body',
+            in: 'body',
+            required: true,
+            schema: {
+              type: 'object',
+              required: ['title', 'description', 'date', 'location'],
+              properties: {
+                title: { type: 'string', example: 'Community Beach Cleanup' },
+                description: { type: 'string', example: 'Join us for a Saturday morning to keep the beach clean!' },
+                date: { type: 'string', example: '2025-11-05T09:00:00Z' },
+                location: { type: 'string', example: 'Ala Moana Beach Park' },
+                category: { type: 'string', example: 'Volunteer' },
+                capacity: { type: 'number', example: 50 },
+                organizerId: { type: 'string', example: '652fe97ac51f5b9a278f003c' }
+              }
+            }
+          }
+        ],
+        responses: {
+          201: { description: 'Created' },
+          400: { description: 'Bad Request' },
+          500: { description: 'Internal Server Error' }
+        }
+      }
+    },
+    '/{id}': {
+      get: {
+        description: 'Get an event by ID',
+        parameters: [
+          { name: 'id', in: 'path', required: true, type: 'string' }
+        ],
+        responses: {
+          200: { description: 'OK' },
+          404: { description: 'Not Found' },
+          500: { description: 'Internal Server Error' }
+        }
+      }
     }
   }
 };
 
+// Output file and endpoint files
 const outputFile = './swagger/swagger-output.json';
 const endpointsFiles = ['./routes/events.js'];
 
-// Generate swagger documentation
+// Generate the Swagger documentation
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  console.log('✅ Swagger documentation generated');
-});     
-
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  require('../server'); // Your server file
+  console.log('Swagger documentation generated successfully.');
 });
+

@@ -26,24 +26,32 @@ const getEventById = async (req, res) => {
 
 // Create a new event
 const createEvent = async (req, res) => {
-    try {
-        const newEvent = new Event(req.body);
-        const savedEvent = await newEvent.save();
-        res.status(201).json(savedEvent);
-    } catch (error) {
-        res.status(400).json({ message: 'Bad Request', error });
+  try {
+    const { title, description, date, location } = req.body;
+
+    if (!title || !date || !location) {
+      return res.status(400).json({ message: 'Missing required fields' });
     }
+
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate)) {
+      return res.status(400).json({ message: 'Invalid date format' });
+    }
+
+    const newEvent = new Event({
+      title,
+      description,
+      date,
+      location,
+    });
+
+    const savedEvent = await newEvent.save();
+    res.status(201).json(savedEvent);
+  } catch (error) {
+    res.status(400).json({ message: 'Bad Request', error });
+  }
 };
 
-// POST /events
-const createEventHandler = async (req, res) => {
-    try {
-        const event = new Event(req.body);
-        await event.save();
-        res.status(201).json(event);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-};
 
-module.exports = { getAllEvents, createEvent, createEventHandler, getEventById };
+
+module.exports = { getAllEvents, createEvent, getEventById };

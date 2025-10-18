@@ -1,64 +1,81 @@
-// Event routes
-
 const express = require('express');
 const router = express.Router();
-const Event = require('../models/event');
-const { getAllEvents, createEvent, getEventById } = require('../controllers/eventsController');
+const {
+  getAllEvents,
+  getEventById,
+  createEvent
+} = require('../controllers/eventsController');
 
+/**
+ * @swagger
+ * /events:
+ *   get:
+ *     summary: Get all events
+ *     description: Retrieve a list of all events.
+ *     responses:
+ *       200:
+ *         description: A list of events
+ */
+router.get('/', getAllEvents);
+
+/**
+ * @swagger
+ * /events/{id}:
+ *   get:
+ *     summary: Get an event by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the event
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Event found
+ *       404:
+ *         description: Event not found
+ */
+router.get('/:id', getEventById);
 
 /**
  * @swagger
  * /events:
  *   post:
  *     summary: Create a new event
- *     description: Adds a new event to the database.
+ *     description: Add a new event to the database.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/definitions/Event'
+ *             type: object
+ *             required:
+ *               - title
+ *               - date
+ *               - location
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Community Beach Cleanup
+ *               description:
+ *                 type: string
+ *                 example: Join us for a Saturday morning cleanup at the park!
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *                 example: 2025-11-05T09:00:00.000Z
+ *               location:
+ *                 type: string
+ *                 example: Ala Moana Beach Park
  *     responses:
  *       201:
- *         description: Event created successfully
+ *         description: Event created
  *       400:
- *         description: Validation error
+ *         description: Invalid input or missing required fields
  */
-router.post('/', createEvent);
 
 // Create a new event
-router.post('/', async (req, res) => {
-  try {
-    const event = new Event(req.body);
-    await event.save();
-    res.status(201).json(event);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// Get all events
-router.get('/', async (req, res) => {
-  try {
-    const events = await Event.find();
-    res.json(events);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Get event by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const event = await Event.findById(req.params.id);
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-    res.json(event);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
+router.post('/', createEvent);
 
 module.exports = router;

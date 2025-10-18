@@ -13,7 +13,7 @@
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "description": "Get all events",
         "responses": {
           "200": {
             "description": "OK"
@@ -24,25 +24,51 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Create a new event",
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
+              "required": [
+                "title",
+                "description",
+                "date",
+                "location"
+              ],
               "properties": {
                 "title": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Community Beach Cleanup"
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Join us for a Saturday morning to keep the beach clean!"
                 },
                 "date": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "2025-11-05T09:00:00Z"
                 },
                 "location": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Ala Moana Beach Park"
+                },
+                "category": {
+                  "type": "string",
+                  "example": "Volunteer"
+                },
+                "capacity": {
+                  "type": "number",
+                  "example": 50
+                },
+                "organizerId": {
+                  "type": "string",
+                  "example": "652fe97ac51f5b9a278f003c"
                 }
               }
             }
@@ -54,13 +80,16 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/{id}": {
       "get": {
-        "description": "",
+        "description": "Get an event by ID",
         "parameters": [
           {
             "name": "id",
