@@ -85,7 +85,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the event to update"
           },
           {
             "name": "body",
@@ -132,13 +133,14 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Delete an event by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the event to delete"
           }
         ],
         "responses": {
