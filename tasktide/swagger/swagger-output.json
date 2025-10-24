@@ -13,7 +13,7 @@
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "description": "Get all events",
         "responses": {
           "200": {
             "description": "OK"
@@ -24,25 +24,38 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Create a new event",
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
+              "required": [
+                "title",
+                "date",
+                "location"
+              ],
               "properties": {
                 "title": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Community Cleanup"
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Join us for a Saturday morning cleanup!"
                 },
                 "date": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "2025-11-05T09:00:00Z"
                 },
                 "location": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Ala Moana Beach Park"
                 }
               }
             }
@@ -54,13 +67,16 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/{id}": {
       "get": {
-        "description": "",
+        "description": "Get an event by ID",
         "parameters": [
           {
             "name": "id",
@@ -75,36 +91,67 @@
           },
           "404": {
             "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
       "put": {
-        "description": "",
+        "description": "Update an existing event by ID",
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "date",
+                "location"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Updated Car Wash Day"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Now featuring refreshments and music"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2025-11-20T10:00:00.000Z"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "Kahala Mall Parking Lot"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Event updated successfully"
+          },
+          "400": {
+            "description": "Invalid input or validation error"
           },
           "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+            "description": "Event not found"
           }
         }
       },
       "delete": {
-        "description": "",
+        "description": "Delete an event by ID",
         "parameters": [
           {
             "name": "id",
@@ -115,13 +162,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Event deleted successfully"
           },
           "404": {
             "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }

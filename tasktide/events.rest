@@ -19,10 +19,21 @@ POST {{base}}/events
 Content-Type: application/json
 
 {
-  "title": "Community Cleanup Day",
+  "title": "Car wash Day",
   "date": "2025-11-12",
-  "location": "Honolulu Park",
-  "description": "Join us for a morning of community service and fun!"
+  "location": "Kahal Mall",
+  "description": "Join us for a morning of car washing and fun!"
+}
+### Update an existing event
+# @name updateEvent
+PUT {{base}}/events/{{eventId}}
+Content-Type: application/json
+
+{
+  "title": "Updated Car Wash Fundraiser",
+  "date": "2025-11-20T10:00:00.000Z",
+  "location": "Kahala Mall Parking Lot",
+  "description": "Now featuring bake sale and refreshments!"
 }
 
 

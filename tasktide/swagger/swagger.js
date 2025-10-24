@@ -6,7 +6,7 @@ const doc = {
   info: {
     title: 'Event Scheduler API',
     description: 'A simple Express API for creating and managing events',
-    version: '1.0.0'
+    version: '1.0.0',
   },
   host: 'localhost:8080',
   basePath: '/events',
@@ -17,8 +17,8 @@ const doc = {
         description: 'Get all events',
         responses: {
           200: { description: 'OK' },
-          500: { description: 'Internal Server Error' }
-        }
+          500: { description: 'Internal Server Error' },
+        },
       },
       post: {
         description: 'Create a new event',
@@ -30,48 +30,77 @@ const doc = {
             required: true,
             schema: {
               type: 'object',
-              required: ['title', 'description', 'date', 'location'],
+              required: ['title', 'date', 'location'],
               properties: {
-                title: { type: 'string', example: 'Community Beach Cleanup' },
-                description: { type: 'string', example: 'Join us for a Saturday morning to keep the beach clean!' },
+                title: { type: 'string', example: 'Community Cleanup' },
+                description: { type: 'string', example: 'Join us for a Saturday morning cleanup!' },
                 date: { type: 'string', example: '2025-11-05T09:00:00Z' },
                 location: { type: 'string', example: 'Ala Moana Beach Park' },
-                category: { type: 'string', example: 'Volunteer' },
-                capacity: { type: 'number', example: 50 },
-                organizerId: { type: 'string', example: '652fe97ac51f5b9a278f003c' }
-              }
-            }
-          }
+              },
+            },
+          },
         ],
         responses: {
           201: { description: 'Created' },
           400: { description: 'Bad Request' },
-          500: { description: 'Internal Server Error' }
-        }
-      }
+        },
+      },
     },
     '/{id}': {
       get: {
         description: 'Get an event by ID',
         parameters: [
-          { name: 'id', in: 'path', required: true, type: 'string' }
+          { name: 'id', in: 'path', required: true, type: 'string' },
         ],
         responses: {
           200: { description: 'OK' },
           404: { description: 'Not Found' },
-          500: { description: 'Internal Server Error' }
-        }
-      }
-    }
-  }
+        },
+      },
+      put: {
+        description: 'Update an event by ID',
+        consumes: ['application/json'],
+        parameters: [
+          { name: 'id', in: 'path', required: true, type: 'string' },
+          {
+            name: 'body',
+            in: 'body',
+            required: true,
+            schema: {
+              type: 'object',
+              required: ['title', 'date', 'location'],
+              properties: {
+                title: { type: 'string', example: 'Updated Car Wash Day' },
+                description: { type: 'string', example: 'Now includes refreshments and music' },
+                date: { type: 'string', example: '2025-11-20T10:00:00.000Z' },
+                location: { type: 'string', example: 'Kahala Mall Parking Lot' },
+              },
+            },
+          },
+        ],
+        responses: {
+          204: { description: 'Event updated successfully' },
+          400: { description: 'Invalid input or validation error' },
+          404: { description: 'Event not found' },
+        },
+      },
+      delete: {
+        description: 'Delete an event by ID',
+        parameters: [
+          { name: 'id', in: 'path', required: true, type: 'string' },
+        ],
+        responses: {
+          200: { description: 'Event deleted successfully' },
+          404: { description: 'Not Found' },
+        },
+      },
+    },
+  },
 };
 
-// Output file and endpoint files
 const outputFile = './swagger/swagger-output.json';
 const endpointsFiles = ['./routes/events.js'];
 
-// Generate the Swagger documentation
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  console.log('Swagger documentation generated successfully.');
+  console.log('✅ Swagger documentation generated successfully.');
 });
-
