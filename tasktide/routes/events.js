@@ -24,6 +24,7 @@ const validateEvent = [
     .notEmpty()
     .withMessage('Date is required')
     .isISO8601()
+    .toDate()
     .withMessage('Date must be a valid ISO 8601 date'),
   body('location')
     .notEmpty()
