@@ -76,13 +76,19 @@
         }
       },
       "put": {
-        "description": "Update an existing event by ID",
+        "description": "Update an event by ID",
         "consumes": [
           "application/json"
         ],
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
             "in": "body",
             "required": true,
             "schema": {
