@@ -8,9 +8,9 @@ const doc = {
     description: 'A simple Express API for creating and managing events',
     version: '1.0.0',
   },
-  host: 'localhost:8080',
+  host: process.env.RENDER_EXTERNAL_URL ? process.env.RENDER_EXTERNAL_URL.replace('https://', '') : 'localhost:8080',
   basePath: '/events',
-  schemes: ['http'],
+  schemes: process.env.RENDER_EXTERNAL_URL ? ['https'] : ['http'],
   paths: {
     '/': {
       get: {
