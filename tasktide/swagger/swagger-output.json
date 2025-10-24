@@ -76,13 +76,41 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Update an existing event by ID",
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
-            "in": "path",
+            "in": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "date",
+                "location"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Updated Car Wash Day"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Now includes refreshments and music"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2025-11-20T10:00:00.000Z"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "Kahala Mall Parking Lot"
+                }
+              }
+            }
           }
         ],
         "responses": {
