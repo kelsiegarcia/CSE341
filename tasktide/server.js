@@ -7,7 +7,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger/swagger-output.json');
 
 const connectDB = require('./config/db'); 
-const eventRoutes = require('./routes/events'); 
+
 
 const app = express();
 // const PORT = process.env.PORT || 8080;
@@ -20,6 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+const eventRoutes = require('./routes/events'); 
 app.use('/events', eventRoutes);
 
 // Swagger Docs
@@ -30,23 +31,6 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Event Scheduler API 🚀');
 });
 
-
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
-
-  if (err.name === 'CastError') {
-    return res.status(400).json({ message: 'Invalid ID format' });
-  }
-
-  if (err.name === 'ValidationError') {
-    return res.status(400).json({ message: err.message });
-  }
-
-  res.status(500).json({
-    message: err.message || 'Internal Server Error'
-  });
-});
 
 // // Start server
 // app.listen(PORT, () => {
@@ -73,7 +57,9 @@ mongoose
 
 // ------------------ ERROR HANDLING ------------------
 app.use((err, req, res, next) => {
-  console.error('💥 Error:', err.message);
+  console.log('💥 Global error handler reached!');
+  console.log('🔥 Raw error object:', err);
+  console.log('🔥 Type of err:', typeof err);
 
   if (err.name === 'CastError') {
     return res.status(400).json({ message: 'Invalid ID format' });
@@ -81,6 +67,8 @@ app.use((err, req, res, next) => {
   if (err.name === 'ValidationError') {
     return res.status(400).json({ message: err.message });
   }
+  console.log('💥 Using default 500 handler now');
+
 
   res.status(err.statusCode || 500).json({
     success: false,
