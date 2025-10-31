@@ -1,50 +1,36 @@
-// TODO: Add express-session middleware for login persistence
-// OAuth login is successfully reaching callback and retrieving profile data
-
-require('dotenv').config({ path: __dirname + '/.env' }); 
-const passport = require('passport');
-const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
-const fs = require('fs');
-
+require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
+const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger/swagger-output.json');
-
-
-const connectDB = require('./config/db'); 
-
+const authRoutes = require('./routes/auth');
+const eventRoutes = require('./routes/events');
+const connectDB = require('./config/db');
 
 const app = express();
-// const PORT = process.env.PORT || 8080;
 
-// Connect to MongoDB
+// ------------------ CONNECT TO MONGODB ------------------
 connectDB();
 
-// Middleware
+// ------------------ MIDDLEWARE ------------------
 app.use(cors());
 app.use(express.json());
 
-// Routes
-const eventRoutes = require('./routes/events'); 
-app.use('/events', eventRoutes);
+// ✅ Session middleware must come BEFORE passport.initialize()
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'keyboardcat',
+  resave: false,
+  saveUninitialized: false
+}));
 
-// Swagger Docs
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
-// Default route
-app.get('/', (req, res) => {
-  res.send('Welcome to the tasktide 🚀');
-});
-
-// Read credentials JSON
-const googleConfig = JSON.parse(
-  fs.readFileSync("./config/google-credentials.json", "utf8")
-).web;
-console.log("OAuth callback URL being used:", googleConfig.redirect_uris[0]);
-
-
+// ✅ Initialize passport and sessions ONCE
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ------------------ PASSPORT GOOGLE OAUTH2 STRATEGY ------------------
 passport.use(
@@ -58,35 +44,28 @@ passport.use(
           : "http://localhost:8080/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
-      // search for or create a user in database
-      // return the profile
-      console.log("✅ Google profile:", profile.displayName)
-
+      console.log("✅ Google profile:", profile.displayName);
       return done(null, profile);
     }
   )
 );
 
+// ✅ Serialization for login sessions
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
 
-app.use(passport.initialize());
+// ------------------ ROUTES ------------------
+app.use('/events', eventRoutes);
+app.use('/auth', authRoutes);
 
-// ------------------ AUTH ROUTES ------------------
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/', (req, res) => {
+  res.send('Welcome to TaskTide 🚀 <a href="/auth/google">Login with Google</a>');
+});
 
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    // Successful authentication
-    res.json({ message: '✅ Successfully authenticated with Google!', user: req.user });
-  }
-);
+// ------------------ SWAGGER DOCS ------------------
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-
-// ------------------ DATABASE CONNECTION ------------------
+// ------------------ START SERVER ------------------
 const PORT = process.env.PORT || 8080;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/tasktide';
 
@@ -96,26 +75,17 @@ mongoose
     console.log('✅ Connected to MongoDB');
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
-  .catch((err) => {
-    console.error('❌ MongoDB connection error:', err.message);
-  });
+  .catch((err) => console.error('❌ MongoDB connection error:', err.message));
 
-// ------------------ ERROR HANDLING ------------------
+// ------------------ GLOBAL ERROR HANDLER ------------------
 app.use((err, req, res, next) => {
   console.log(`➡️ ${req.method} ${req.url}`);
   console.log('💥 Global error handler reached!');
   console.log('🔥 Raw error object:', err);
-  console.log('🔥 Type of err:', typeof err);
-
-  if (err.name === 'CastError') {
+  if (err.name === 'CastError')
     return res.status(400).json({ message: 'Invalid ID format' });
-  }
-  if (err.name === 'ValidationError') {
+  if (err.name === 'ValidationError')
     return res.status(400).json({ message: err.message });
-  }
-  console.log('💥 Using default 500 handler now');
-
-
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
