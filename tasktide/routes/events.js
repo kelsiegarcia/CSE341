@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+const { ensureAuthenticated } = require('../middleware/authMiddleware');
+
+
 
 
 const {
@@ -114,7 +117,7 @@ router.get('/:id', getEventById);
  */
 
 // Create a new event
-router.post('/', validateEvent, handleValidationErrors, createEvent);
+router.post('/', ensureAuthenticated, validateEvent, handleValidationErrors, createEvent);
 
 /**
  * @swagger
@@ -162,10 +165,10 @@ router.post('/', validateEvent, handleValidationErrors, createEvent);
  *         description: Event not found
  */
 // PUT
-router.put('/:id', validateEvent, handleValidationErrors, updateEvent);
+router.put('/:id', ensureAuthenticated, validateEvent, handleValidationErrors, updateEvent);
 
 // DELETE
-router.delete('/:id', deleteEvent);
+router.delete('/:id', ensureAuthenticated, deleteEvent);
 
 
 module.exports = router;

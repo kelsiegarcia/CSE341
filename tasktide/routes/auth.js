@@ -14,7 +14,7 @@ router.get(
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
         // Redirect to the welcome page after successful login
-        res.redirect('/auth/welcome');
+        res.redirect('/api-docs');
     }
 );
 

@@ -1,5 +1,3 @@
-//to do: create render environement variables for google client id and secret
-
 require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const mongoose = require('mongoose');
