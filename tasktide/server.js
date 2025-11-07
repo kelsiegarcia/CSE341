@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
 });
 
 // ------------------ SWAGGER DOCS ------------------
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile)); app.use(
+app.use(
   '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerFile, {
@@ -84,7 +84,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile)); app.use(
       }
     `,
     customJs: `
-      window.onload = function() {
+      window.addEventListener('load', () => {
         const topbar = document.querySelector('.topbar');
         if (topbar && !document.querySelector('.logout-btn')) {
           const btn = document.createElement('button');
@@ -95,7 +95,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile)); app.use(
           };
           topbar.appendChild(btn);
         }
-      };
+      });
     `
   })
 );
