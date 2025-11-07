@@ -33,9 +33,12 @@ router.get('/welcome', (req, res) => {
 
 // ------------------ LOGOUT ------------------
 router.get('/logout', (req, res, next) => {
-    req.logout(err => {
-        if (err) return next(err);
-        res.redirect('/');
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            res.redirect('/'); // or wherever you want after logout
+        });
     });
 });
 

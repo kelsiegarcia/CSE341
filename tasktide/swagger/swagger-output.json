@@ -51,6 +51,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -70,54 +73,22 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
           }
         }
       },
       "put": {
-        "description": "Update an event by ID",
-        "consumes": [
-          "application/json"
-        ],
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The ID of the event to update"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "required": [
-                "title",
-                "date",
-                "location"
-              ],
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Updated Car Wash Day"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Now includes refreshments and music"
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2025-11-20T10:00:00.000Z"
-                },
-                "location": {
-                  "type": "string",
-                  "example": "Kahala Mall Parking Lot"
-                }
-              }
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -127,25 +98,30 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           }
         }
       },
       "delete": {
-        "description": "Delete an event by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The ID of the event to delete"
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"

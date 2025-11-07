@@ -1,6 +1,8 @@
 // swagger/swagger.js
 const swaggerAutogen = require('swagger-autogen')();
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const doc = {
   swagger: '2.0',
   info: {
@@ -8,7 +10,7 @@ const doc = {
     description: 'A simple Express API for creating and managing events',
     version: '1.0.0',
   },
-  host: process.env.RENDER_EXTERNAL_URL ? process.env.RENDER_EXTERNAL_URL.replace('https://', '') : 'localhost:8080',
+  host: isProd ? 'cse341-webservices-zcob.onrender.com' : 'localhost:8080',
   basePath: '/events',
   schemes: process.env.RENDER_EXTERNAL_URL ? ['https'] : ['http'],
   paths: {
@@ -104,3 +106,5 @@ const endpointsFiles = ['./routes/events.js'];
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
   console.log('✅ Swagger documentation generated successfully.');
 });
+
+
