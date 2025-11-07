@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const user = require('../models/user.js'); 
+const mongoose = require('mongoose');
+
 
 // GET all users
 router.get('/', async (req, res) => {
@@ -27,18 +29,27 @@ router.get('/:id', async (req, res) => {
 // POST new user
 router.post('/', async (req, res) => {
     try {
+        console.log('--- /users POST called ---');
+        console.log('Mongoose connection state:', mongoose.connection.readyState);
+        console.log('Body received:', req.body);
+
         const { name, email, googleId } = req.body;
         if (!name || !email) {
             return res.status(400).json({ message: 'Name and email are required' });
         }
-        const user = new user({ name, email, googleId });
-        const result = await user.save();
+
+        const newUser = new user({ name, email, googleId }); // ✅ lowercase here
+        const result = await newUser.save();
+
         res.status(201).json({ message: 'User created', user: result });
     } catch (err) {
-        res.status(500).json({ message: 'Error creating user', error: err });
+        console.error('❌ Error creating user:', err);
+        res.status(500).json({
+            message: 'Error creating user',
+            error: err.message || err
+        });
     }
 });
-
 // PUT update user
 router.put('/:id', async (req, res) => {
     try {
