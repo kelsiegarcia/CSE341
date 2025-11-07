@@ -6,14 +6,14 @@
     "version": "1.0.0"
   },
   "host": "cse341-webservices-zcob.onrender.com",
-  "basePath": "/events",
+  "basePath": "/",
   "schemes": [
     "https"
   ],
   "paths": {
-    "/": {
+    "/events": {
       "get": {
-        "description": "",
+        "description": "Get all events",
         "responses": {
           "200": {
             "description": "OK"
@@ -21,7 +21,7 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Create a new event",
         "parameters": [
           {
             "name": "body",
@@ -30,16 +30,16 @@
               "type": "object",
               "properties": {
                 "title": {
-                  "example": "any"
+                  "example": "Team Meeting"
                 },
                 "description": {
-                  "example": "any"
+                  "example": "Weekly sync-up"
                 },
                 "date": {
-                  "example": "any"
+                  "example": "2025-11-10"
                 },
                 "location": {
-                  "example": "any"
+                  "example": "Zoom"
                 }
               }
             }
@@ -58,9 +58,9 @@
         }
       }
     },
-    "/{id}": {
+    "/events/{id}": {
       "get": {
-        "description": "",
+        "description": "Get an event by ID",
         "parameters": [
           {
             "name": "id",
@@ -82,13 +82,34 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Update an event by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "Updated Meeting"
+                },
+                "description": {
+                  "example": "Updated details"
+                },
+                "date": {
+                  "example": "2025-11-12"
+                },
+                "location": {
+                  "example": "Google Meet"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -107,7 +128,76 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Delete an event by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "description": "Get all users",
+        "responses": {
+          "200": {
+            "description": "List of all users"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Jane Doe"
+                },
+                "email": {
+                  "example": "jane@example.com"
+                },
+                "googleId": {
+                  "example": "10394856789"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "description": "Get a user by ID",
         "parameters": [
           {
             "name": "id",
@@ -120,11 +210,61 @@
           "200": {
             "description": "OK"
           },
-          "401": {
-            "description": "Unauthorized"
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "description": "Update a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Updated Name"
+                },
+                "email": {
+                  "example": "updated@example.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated"
           },
           "404": {
-            "description": "Not Found"
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }

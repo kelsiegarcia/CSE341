@@ -11,6 +11,7 @@ const swaggerFile = require('./swagger/swagger-output.json');
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');
 const connectDB = require('./config/db');
+const usersRoutes = require('./routes/users');
 
 const app = express();
 
@@ -57,6 +58,7 @@ passport.deserializeUser((obj, done) => done(null, obj));
 // ------------------ ROUTES ------------------
 app.use('/events', eventRoutes);
 app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
 
 app.get('/', (req, res) => {
   res.send('Welcome to TaskTide 🚀 <a href="/auth/google">Login with Google</a>');
