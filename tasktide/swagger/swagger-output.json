@@ -173,15 +173,22 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "type": "string",
                   "example": "Jane Doe"
                 },
                 "email": {
+                  "type": "string",
                   "example": "jane@example.com"
                 },
                 "googleId": {
+                  "type": "string",
                   "example": "10394856789"
                 }
-              }
+              },
+              "required": [
+                "name",
+                "email"
+              ]
             }
           }
         ],
@@ -207,11 +214,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "User created"
           },
-          "404": {
-            "description": "User not found"
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       },
