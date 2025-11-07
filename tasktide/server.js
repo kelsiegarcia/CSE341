@@ -22,14 +22,14 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Session middleware must come BEFORE passport.initialize()
+//  Session middleware must come BEFORE passport.initialize()
 app.use(session({
   secret: process.env.SESSION_SECRET || 'keyboardcat',
   resave: false,
   saveUninitialized: false
 }));
 
-// ✅ Initialize passport and sessions ONCE
+// Initialize passport and sessions ONCE
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -45,13 +45,13 @@ passport.use(
           : "http://localhost:8080/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log("✅ Google profile:", profile.displayName);
+      console.log(" Google profile:", profile.displayName);
       return done(null, profile);
     }
   )
 );
 
-// ✅ Serialization for login sessions
+// Serialization for login sessions
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
@@ -69,36 +69,7 @@ app.use(
   '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerFile, {
-    customSiteTitle: 'TaskTide API Docs',
-    customCss: `
-      .logout-btn {
-        background-color: #e74c3c;
-        color: white;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-left: 12px;
-      }
-      .logout-btn:hover {
-        background-color: #c0392b;
-      }
-    `,
-    customJs: `
-      window.addEventListener('load', () => {
-        const topbar = document.querySelector('.topbar');
-        if (topbar && !document.querySelector('.logout-btn')) {
-          const btn = document.createElement('button');
-          btn.innerText = 'Logout';
-          btn.className = 'logout-btn';
-          btn.onclick = () => {
-            window.location.href = '/auth/logout';
-          };
-          topbar.appendChild(btn);
-        }
-      });
-    `
+    customSiteTitle: 'CSE341 Web Services API Docs'
   })
 );
 
