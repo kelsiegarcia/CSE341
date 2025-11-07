@@ -5,10 +5,10 @@
     "description": "A simple Express API for creating and managing events",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "cse341-webservices-zcob.onrender.com",
   "basePath": "/events",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {
