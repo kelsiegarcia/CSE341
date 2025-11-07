@@ -12,7 +12,7 @@ const doc = {
   },
   host: isProd ? 'cse341-webservices-zcob.onrender.com' : 'localhost:8080',
   basePath: '/events',
-  schemes: process.env.RENDER_EXTERNAL_URL ? ['https'] : ['http'],
+  schemes: isProd ? ['https'] : ['http'],
   paths: {
     '/': {
       get: {

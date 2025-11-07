@@ -34,10 +34,10 @@ router.get('/welcome', (req, res) => {
 // ------------------ LOGOUT ------------------
 router.get('/logout', (req, res, next) => {
     req.logout(function (err) {
-        if (err) { return next(err); }
+        if (err) return next(err);
         req.session.destroy(() => {
             res.clearCookie('connect.sid');
-            res.redirect('/'); // or wherever you want after logout
+            res.redirect('/'); // Redirect after logout
         });
     });
 });

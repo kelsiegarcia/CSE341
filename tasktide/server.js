@@ -63,7 +63,42 @@ app.get('/', (req, res) => {
 });
 
 // ------------------ SWAGGER DOCS ------------------
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile)); app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, {
+    customSiteTitle: 'TaskTide API Docs',
+    customCss: `
+      .logout-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-left: 12px;
+      }
+      .logout-btn:hover {
+        background-color: #c0392b;
+      }
+    `,
+    customJs: `
+      window.onload = function() {
+        const topbar = document.querySelector('.topbar');
+        if (topbar && !document.querySelector('.logout-btn')) {
+          const btn = document.createElement('button');
+          btn.innerText = 'Logout';
+          btn.className = 'logout-btn';
+          btn.onclick = () => {
+            window.location.href = '/auth/logout';
+          };
+          topbar.appendChild(btn);
+        }
+      };
+    `
+  })
+);
 
 // ------------------ START SERVER ------------------
 const PORT = process.env.PORT || 8080;
